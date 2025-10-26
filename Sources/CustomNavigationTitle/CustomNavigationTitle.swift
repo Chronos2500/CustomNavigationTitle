@@ -37,7 +37,7 @@ private struct ScrollAwareTitleModifier<V: View>: ViewModifier {
                         DispatchQueue.main.async{
                             if isVisible {
                                 isShowNavigationTitle = false
-                            } else if !isVisible {
+                            } else {
                                 isShowNavigationTitle = true
                             }
                         }
