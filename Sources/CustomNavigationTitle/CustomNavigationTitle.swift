@@ -24,22 +24,18 @@ extension View {
 
 private struct ScrollAwareTitleModifier<V: View>: ViewModifier {
     @State private var isShowNavigationTitle = false
-    let title: () -> V
+    let title: V
 
     func body(content: Content) -> some View {
         content
             .backgroundPreferenceValue(BoundsPreferenceKey.self) { anchor in
                 GeometryReader { proxy in
-                    if let anchor = anchor {
+                    if let anchor {
                         let scrollFrame = proxy.frame(in: .local).minY
                         let itemFrame = proxy[anchor]
                         let isVisible = itemFrame.maxY > scrollFrame
                         DispatchQueue.main.async{
-                            if isVisible {
-                                isShowNavigationTitle = false
-                            } else {
-                                isShowNavigationTitle = true
-                            }
+                            isShowNavigationTitle = !isVisible
                         }
                     }
                     return Color.clear
@@ -48,7 +44,7 @@ private struct ScrollAwareTitleModifier<V: View>: ViewModifier {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    title()
+                    title
                         .bold()
                         .opacity(isShowNavigationTitle ? 1 : 0)
                         .animation(.easeIn(duration: 0.15), value: isShowNavigationTitle)
@@ -58,8 +54,8 @@ private struct ScrollAwareTitleModifier<V: View>: ViewModifier {
 }
 
 extension View {
-    public func scrollAwareTitle<V: View>(@ViewBuilder _ title: @escaping () -> V) -> some View {
-        modifier(ScrollAwareTitleModifier(title: title))
+    public func scrollAwareTitle<V: View>(@ViewBuilder _ title: () -> V) -> some View {
+        modifier(ScrollAwareTitleModifier(title: title()))
     }
 }
 
