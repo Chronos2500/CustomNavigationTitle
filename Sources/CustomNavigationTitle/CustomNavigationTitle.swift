@@ -47,6 +47,7 @@ private struct ScrollAwareTitleModifier<V: View>: ViewModifier {
                 ToolbarItem(placement: .principal) {
                     title
                         .bold()
+                        .lineLimit(1)
                         .opacity(isShowNavigationTitle ? 1 : 0)
                         .animation(animation, value: isShowNavigationTitle)
                 }
