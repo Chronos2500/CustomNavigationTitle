@@ -42,7 +42,7 @@ struct ContentView: View {
                     section2
                 }
             }
-            .listStyle(.grouped)
+            .listStyle(.insetGrouped)
             .scrollAwareTitle("Privacy & Security")
             .navigationTitle("Hello!")
         }
