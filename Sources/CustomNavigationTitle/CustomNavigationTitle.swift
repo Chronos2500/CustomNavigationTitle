@@ -24,6 +24,7 @@ extension View {
 
 private struct ScrollAwareTitleModifier<V: View>: ViewModifier {
     @State private var isShowNavigationTitle = false
+    @Environment(\.scrollAwareTitleAnimation) private var animation
     let title: V
 
     func body(content: Content) -> some View {
@@ -47,7 +48,7 @@ private struct ScrollAwareTitleModifier<V: View>: ViewModifier {
                     title
                         .bold()
                         .opacity(isShowNavigationTitle ? 1 : 0)
-                        .animation(.easeIn(duration: 0.15), value: isShowNavigationTitle)
+                        .animation(animation, value: isShowNavigationTitle)
                 }
             }
     }
