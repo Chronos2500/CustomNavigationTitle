@@ -1,5 +1,3 @@
-#if os(iOS)
-
 import SwiftUI
 
 struct BoundsPreferenceKey: PreferenceKey {
@@ -42,7 +40,6 @@ private struct ScrollAwareTitleModifier<V: View>: ViewModifier {
                     return Color.clear
                 }
             }
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     title
@@ -51,7 +48,19 @@ private struct ScrollAwareTitleModifier<V: View>: ViewModifier {
                         .opacity(isShowNavigationTitle ? 1 : 0)
                         .animation(animation, value: isShowNavigationTitle)
                 }
+#if compiler(>=6.2)
+                .modifier{
+                    if #available(iOS 26.0, macOS 26.0, macCatalyst 26.0, *) {
+                        $0.sharedBackgroundVisibility(.hidden)
+                    } else {
+                        $0
+                    }
+                }
+#endif
             }
+#if canImport(UIKit)
+            .navigationBarTitleDisplayMode(.inline)
+#endif
     }
 }
 
@@ -73,5 +82,3 @@ extension View {
         }
     }
 }
-
-#endif

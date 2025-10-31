@@ -42,7 +42,9 @@ struct ContentView: View {
                     section2
                 }
             }
+#if canImport(UIKit)
             .listStyle(.insetGrouped)
+#endif
             .scrollAwareTitle("Privacy & Security")
             .navigationTitle("Hello!")
         }
